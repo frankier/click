@@ -45,3 +45,16 @@ html_experimental_html5_writer = True
 latex_documents = [
     (master_doc, "Click.tex", "Click Documentation", "Pallets Team", "manual")
 ]
+
+# theme compatibility --------------------------------------------------
+
+def setup(app):
+    from click.testing import CliRunner
+
+    orig_invoke = CliRunner.invoke
+
+    def invoke(self, *args, **kwargs):
+        kwargs.pop("prog_name", None)
+        return orig_invoke(self, *args, **kwargs)
+
+    CliRunner.invoke = invoke
